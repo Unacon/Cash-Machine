@@ -3,21 +3,21 @@
 */
 
 
-nameInput = (name) => {
-  if(name !== 'null'){
-  const nameElement = document.getElementById('name');
-  nameElement.innerHTML=name;
-  }  
+const nameInput = (name) => {  
+  if(!name){
+    const nameElement = document.getElementById('name');
+    nameElement.innerHTML=name;    
+  }
 };
 
 const nameButtonElement = document.getElementById('nameButton');
 const nameInputElement = document.getElementById('nameInput');
 
 nameButtonElement.addEventListener('click',() => {
-  Name = nameInputElement.value;
-  nameInput(Name);
+  const name = nameInputElement.value;
+  nameInput(name);
 
-  remove = document.getElementById('nameScreen');  
+  const remove = document.getElementById('nameScreen');  
   document.body.removeChild(remove);// Remove a tela inicial que solicita o nome
 })
 
@@ -30,7 +30,7 @@ nameButtonElement.addEventListener('click',() => {
 const buttonClassLineElement = document.getElementsByClassName('number');
 const buttonClassLineElementArray = Array.from(buttonClassLineElement);
 var valueTotal = 0;
-const value = [];
+let value = [];
 buttonClassLineElementArray.forEach((button) => {   
   button.addEventListener('click',()=>{    
     value.push(button.innerText);    //Pega valor do butão
@@ -45,8 +45,8 @@ buttonClassLineElementArray.forEach((button) => {
 */
 
 concatArrayValue = (value) => { 
-  Total = value.join(''); // JUNTA TODOS VALORES DO ARRAY
-  return Total;
+  const total = value.join(''); // JUNTA TODOS VALORES DO ARRAY
+  return total;
 };
 
 /**
@@ -58,16 +58,10 @@ const clearElement = document.getElementById('clear');
 //LIMPA O VALORTOTAL E O ARRAY DE AGRUPAMENTO
 clearElement.addEventListener('click',() => {
   valueTotal = null;
-  arrayClean(value);
+  value = [];
   setValue(valueTotal);// SETA VALOR = 0 NO FRONT-END
   withdrawElement.innerText = ' '; 
 });
-
-arrayClean = (array) =>{
- while(array.length){
-   array.pop();
- }
-}
 
 /**
 * SETAR VALOR NO FRONT-END
@@ -88,7 +82,7 @@ confirm.addEventListener('click',() => {
   //CRIADO UM OBJ DE OBJETOS PARA AS NOTAS
   //AMOUNTNOTES - QUANTIDADE DE NOTAS
   //OVERNOTES - SOBRA DO TOTAL
-  var Notes = {
+  const notes = {
     Total: valueTotal,
     notes100: {
       amountNotes : 0,
@@ -108,13 +102,13 @@ confirm.addEventListener('click',() => {
     }
   }
   notesValid = true;  // validação da entrada com saida
-  Notes.notes100 = amountNotes(Notes.Total,100,notesValid);
-  Notes.notes50 = amountNotes(Notes.notes100.overNotes,50,notesValid);
-  Notes.notes20 = amountNotes(Notes.notes50.overNotes,20,notesValid);
-  Notes.notes10 = amountNotes(Notes.notes20.overNotes,10, notesValid); 
+  notes.notes100 = amountNotes(notes.Total,100,notesValid);
+  notes.notes50 = amountNotes(notes.notes100.overNotes,50,notesValid);
+  notes.notes20 = amountNotes(notes.notes50.overNotes,20,notesValid);
+  notes.notes10 = amountNotes(notes.notes20.overNotes,10, notesValid); 
   
-  if(Notes.notes10.notesValid){
-    withdrawNotes(Notes);
+  if(notes.notes10.notesValid){
+    withdrawNotes(notes);
   }
 });
 
@@ -143,20 +137,20 @@ function amountNotes(value, notes, notesValid){
 const withdrawElement = document.getElementById("withdraw");
 
 //CRIA STRING COM TODAS AS NOTAS PARA EXIBIÇÃO
-function withdrawNotes(Notes){ 
-  var StringNotes = '';
+function withdrawNotes(notes){ 
+  var stringNotes = '';
 
-  StringNotes = drawNotes(StringNotes,Notes.notes100.amountNotes,100);
-  StringNotes = drawNotes(StringNotes,Notes.notes50.amountNotes,50);
-  StringNotes = drawNotes(StringNotes,Notes.notes20.amountNotes,20);
-  StringNotes = drawNotes(StringNotes,Notes.notes10.amountNotes,10);
+  stringNotes = drawNotes(stringNotes,notes.notes100.amountNotes,100);
+  stringNotes = drawNotes(stringNotes,notes.notes50.amountNotes,50);
+  stringNotes = drawNotes(stringNotes,notes.notes20.amountNotes,20);
+  stringNotes = drawNotes(stringNotes,notes.notes10.amountNotes,10);
 
   //AJUSTE FINO PARA RETIRAR ',' DO FINAL  
-  StringNotesModulated = StringNotes.substring(0,StringNotes.length-2);  
-  withdrawElement.innerText = StringNotesModulated;
+  const stringNotesModulated = stringNotes.substring(0,stringNotes.length-2);  
+  withdrawElement.innerText = stringNotesModulated;
 
   //ARRAY COM NOTAS PARA FUTUROS UPDATES
-  const ArrayNotes = StringNotesModulated.split(', ');  
+  const ArrayNotes = stringNotesModulated.split(', ');  
 }
 
 // CONCATENA AS NOTAS EM UMA STRING PARA EXIBIÇÃO
